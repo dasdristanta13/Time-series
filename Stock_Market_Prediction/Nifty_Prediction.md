@@ -458,7 +458,21 @@ NIF_Big_norm <- data.frame(AMG=name_vec,
   ```
   </details>  
  <img src="Plots/Nifty_model_density.png" alt="drawing" width="600"/>
-  
+
+ 
+  <details>
+    <summary>Click to expand!</summary>
+  ```r
+    par(mfrow=c(2,2))
+    plot(niftyfit_1,which=9)
+    plot(niftyfit_2,which=9)
+    plot(niftyfit_3,which=9)
+    plot(niftyfit_4,which=9)
+  ```
+  </details>  
+ <img src="Plots/Nifty_Model_QQ.png" alt="drawing" width="600"/>
+ 
+ ** Checking the density plots and the QQ plots of the models it can be said that models with the Skewed Students'-t distribution assumption fits well. 
   
   <details>
   <summary>Click to expand!</summary>
