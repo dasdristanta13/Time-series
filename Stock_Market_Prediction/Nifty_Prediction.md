@@ -59,7 +59,7 @@ chartSeries(niftyxts)
   </details>
   
   
- <img src="Plots/Nifty_act.jpeg" alt="drawing" width="500"/>
+ <img src="Plots/Nifty/nifty_act.jpeg" alt="drawing"/>
 
   
   <details>
@@ -70,7 +70,7 @@ acf2(niftyxts)
 
   ```
   </details>
-<img src="Plots/Nifty_acf.jpeg" alt="drawing" width="500"/> 
+<img src="Plots/Nifty/nifty_acf_pacf.jpeg" alt="drawing"> 
   
   
 
@@ -132,7 +132,7 @@ acf2(niftyxts)
   ```
   </details>
   
- <img src="Plots/Nifty_logret.jpeg" alt="drawing" width="400"/> <img src="Plots/Nifty_sq_logret.jpeg" alt="drawing" width="400"/>
+ <img src="Plots/Nifty/nifty_logret_sqlogret.jpeg" alt="drawing"/>
   
 
   
@@ -145,7 +145,8 @@ acf2(niftyxts)
   ```
   </details>
   
- <img src="Plots/Nifty_logret_acf.jpeg" alt="drawing" width="400"/> <img src="Plots/Nifty_sq_logret_acf.jpeg" alt="drawing" width="400"/>
+ <img src="Plots/Nifty/nifty_logret_acf_pacf.jpeg" alt="drawing"/> 
+ <img src="Plots/Nifty/nifty_sqlogret_acf_pacf.jpeg" alt="drawing"/>
   
   
   
