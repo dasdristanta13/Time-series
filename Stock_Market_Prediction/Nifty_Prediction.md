@@ -474,6 +474,95 @@ NIF_Big_norm <- data.frame(AMG=name_vec,
  
  ** Checking the density plots and the QQ plots of the models it can be said that models with the Skewed Students'-t distribution assumption fits well. 
   
+   <details>
+    <summary>Click to expand!</summary>
+  ```r
+    par(mfrow=c(2,1))
+    ts.plot(niftyfit_3@fit$sigma,xlab="",ylab="",main="Volatility of suggested model 3")
+    ts.plot(niftyfit_4@fit$sigma,xlab="",ylab="",main="Volatility of suggested model 4")
+  ```
+  </details>
+  
+  
+  ![image](https://user-images.githubusercontent.com/70366198/139867795-cc538494-27e7-4986-8b5e-30835fb6b1ac.png)
+
+  #### Forecast using model 3:
+  
+  <details>
+  <summary>Click to expand!</summary>
+  
+  ```r
+    
+    nifty_forecast1<- ugarchforecast(niftyfit_3,n.roll = 30,n.ahead = 30)
+    par(mfrow=c(1,1))
+    plot(nifty_forecast1,which="all")
+  ```
+  </details>
+   
+![image](https://user-images.githubusercontent.com/70366198/139867628-f8d7d6a9-04b6-4aaa-a02b-ec4d01b48e58.png)
+
+  <details>
+  <summary>Click to expand!</summary>
+  
+  ```r
+    last= as.numeric(niftyw$Close[length(niftyw$Close)])
+    Update1<- c(as.numeric(niftyw$Close))
+
+    for (i in seq(1,30)){
+      last= last*exp(nifty_forecast1@forecast$seriesFor[i])
+      Update1 <- c(Update1,last)
+    }
+
+
+
+    ###########################
+    plot(ts(Update1),col="red",main="Nifty Forecast",ylab="",lwd=2,type="l")
+    lines(niftyw$Close,lwd=2)
+    legend(0, 17999, legend=c("Forecast","Actual"),
+           col=c("red","black"), lty=1, cex=0.8,text.font=4, bg='lightblue')
+  ```
+  </details>
+    
+ <img src="Plots/Nifty_Forecast.png" alt="drawing" width="850"/>    
+
+  <details>
+  <summary>Click to expand!</summary>
+  
+  ```r
+    nifty_forecast2<- ugarchforecast(niftyfit_4,n.roll = 20,n.ahead = 30)
+    nifty_forecast2@forecast$seriesFor
+    plot(nifty_forecast2,which="all")
+  ```
+  </details>
+    
+ ![image](https://user-images.githubusercontent.com/70366198/139870856-cea9a834-905b-494c-90cd-a5eaca9f5b3d.png)
+
+    
+  <details>
+  <summary>Click to expand!</summary>
+  
+  ```r
+    last= as.numeric(niftyw$Close[length(niftyw$Close)])
+    Update2<- c(as.numeric(niftyw$Close))
+
+    for (i in seq(1,30)){
+      last= last*exp(nifty_forecast2@forecast$seriesFor[i])
+      Update2 <- c(Update2,last)
+    }
+    
+    ###########################
+    plot(ts(Update2),col="red",main="Nifty Forecast",ylab="",lwd=2,type="l")
+    lines(niftyw$Close,lwd=2)
+    legend(0, 17999, legend=c("Forecast","Actual"),
+           col=c("red","black"), lty=1, cex=0.8,text.font=4, bg='lightblue')
+
+  ```
+  </details>  
+   
+    
+    
+  
+  
   <details>
   <summary>Click to expand!</summary>
   
