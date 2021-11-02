@@ -65,9 +65,19 @@ chartSeries(niftyxts)
   ```
   </details>
   
-![Img1](Plot/Nifty_act.jpeg)
   
+ <img src="Plots/Nifty_act.jpeg" alt="drawing" width="700"/>
+
   
+  <details>
+  <summary>Click to expand!</summary>
+  
+  ```r
+acf2(niftyxts)
+
+  ```
+  </details>
+<img src="Plots/Nifty_acf.jpeg" alt="drawing" width="700"/> 
   
   
   
