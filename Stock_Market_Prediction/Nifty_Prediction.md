@@ -140,6 +140,19 @@ acf2(niftyxts)
   <summary>Click to expand!</summary>
   
   ```r
+  acf2(niftyreturn)
+  acf2(niftyreturn**2)
+  ```
+  </details>
+  
+ <img src="Plots/Nifty_logret_acf.jpeg" alt="drawing" width="400"/> <img src="Plots/Nifty_sq_logret_acf.jpeg" alt="drawing" width="400"/>
+  
+  
+  
+  <details>
+  <summary>Click to expand!</summary>
+  
+  ```r
   summary(ur.df(niftyreturn, type="none",lag=1))
   ```
   </details>
@@ -193,22 +206,162 @@ tau1 -2.58 -1.95 -1.62
   
   
   
+### Best p,q and P,Q finding for ARMA(p,q) + GARCH(P,Q)
   
+  <details>
+  <summary>Click to expand!</summary>
   
+  ```r
+    NIF_AIC_norm<-c()
+NIF_BIC_norm<-c()
+
+
+
+
+NIF_Big_norm <-c()
+name_vec<- c()
+
+
+for (a in seq(0,4)){
+  for (b in seq(0,4)){
+    for (i in seq(1,5)){
+      for (j in seq(1,5)){
+        try(k <- ugarchspec(mean.model = list(armaOrder=c(a,b)),variance.model = list(model="sGARCH",garchOrder=c(i,j)),distribution.model="sstd"))
+        try(l <-ugarchfit(data=niftyreturn,spec = k,out.sample = 20))
+        try({NIF_AIC_norm<- c(NIF_AIC_norm,infocriteria(l)[1])
+            NIF_BIC_norm<- c(NIF_BIC_norm,infocriteria(l)[2])
+            name_vec<- c(name_vec,paste(a,b,i,j))})
+      }
+    }
+
+  }
+}
+
+
+
+NIF_AIC_norm
+
+NIF_Big_norm <- data.frame(AMG=name_vec,
+                           AIC=NIF_AIC_norm,
+                           BIC=NIF_BIC_norm)
+
+  ```
+  </details> 
+
+## Suggesting Different models:  
   
+### Suggesting two models for least AIC, BIC and AICc values for normal distribution:
+  * Considering AIC, we get the model ARMA(3,4) + GARCH(3,4)
+  * Considering BIC and AICc, we get the model ARMA(0,0) + GARCH(1,1)
   
+### Suggesting two models for least AIC, BIC and AICc values for skewed student's-t distribution:
+  * Considering AIC, we get the model ARMA(3,2) + GARCH(3,1)
+  * Considering BIC and AICc, we get the model ARMA(0,0) + GARCH(1,1)
   
+#### Models with normal distribution:
+  <details>
+    <summary> Click to expand! </summary>
+    
+    ```r
+    niftyspec_1<-ugarchspec(mean.model = list(armaOrder=c(3,4)),variance.model = list(model="sGARCH",garchOrder=c(3,4)),distribution.model="norm")
+    niftyfit_1<-ugarchfit(data=niftyreturn,spec = niftyspec_1,out.sample = 20)
+    niftyfit_1
+    ```
+  </details>
   
+  * Model 1:
   
+  ```r
+  *---------------------------------*
+  *          GARCH Model Fit        *
+  *---------------------------------*
+
+  Conditional Variance Dynamics 	
+  -----------------------------------
+  GARCH Model	: sGARCH(3,4)
+  Mean Model	: ARFIMA(3,0,4)
+  Distribution	: norm 
+
+  Optimal Parameters
+  ------------------------------------
+          Estimate  Std. Error     t value Pr(>|t|)
+  mu      0.000172    0.000001  1.2522e+02  0.00000
+  ar1    -1.441115    0.000433 -3.3273e+03  0.00000
+  ar2    -1.412654    0.000377 -3.7439e+03  0.00000
+  ar3    -0.817146    0.000301 -2.7122e+03  0.00000
+  ma1     1.288876    0.000600  2.1484e+03  0.00000
+  ma2     1.230236    0.000429  2.8665e+03  0.00000
+  ma3     0.579737    0.000223  2.6033e+03  0.00000
+  ma4    -0.225758    0.000123 -1.8402e+03  0.00000
+  omega   0.000000    0.000001  2.3168e-02  0.98152
+  alpha1  0.001997    0.054906  3.6379e-02  0.97098
+  alpha2  0.036442    0.099570  3.6599e-01  0.71437
+  alpha3  0.147265    0.167423  8.7960e-01  0.37908
+  beta1   0.514385    0.973410  5.2844e-01  0.59720
+  beta2   0.000004    1.029866  4.0000e-06  1.00000
+  beta3   0.000005    0.297172  1.6000e-05  0.99999
+  beta4   0.264305    0.313267  8.4371e-01  0.39883
   
-  
+  LogLikelihood : 1901.474 
+
+  Information Criteria
+  ------------------------------------
+
+  Akaike       -10.563
+  Bayes        -10.389
+  ```
  
+  <details>
+    <summary>Click to expand!</summary>
+  
+  ```r
+    niftyspec_2<-ugarchspec(mean.model = list(armaOrder=c(0,0)),variance.model = list(model="sGARCH",garchOrder=c(1,1)),distribution.model="norm")
+    niftyfit_2<-ugarchfit(data=niftyreturn,spec = niftyspec_2,out.sample = 20)
+    niftyfit_2
+  ```
+  </details>
+  
+  * Model 2:
+  
+  ```r
+  *---------------------------------*
+  *          GARCH Model Fit        *
+  *---------------------------------*
+
+  Conditional Variance Dynamics 	
+  -----------------------------------
+  GARCH Model	: sGARCH(1,1)
+  Mean Model	: ARFIMA(0,0,0)
+  Distribution	: norm 
+
+  Optimal Parameters
+  ------------------------------------
+          Estimate  Std. Error  t value Pr(>|t|)
+  mu      0.000146    0.000054  2.67491 0.007475
+  omega   0.000000    0.000001  0.01159 0.990752
+  alpha1  0.068877    0.017867  3.85506 0.000116
+  beta1   0.920911    0.016247 56.68364 0.000000
+
+  LogLikelihood : 1886.906 
+
+  Information Criteria
+  ------------------------------------
+
+  Akaike       -10.548
+  Bayes        -10.505
+  ```
+  
+  
+  
+  
+  
   
   <details>
   <summary>Click to expand!</summary>
   
   ```r
 
-
   ```
   </details>
+  
+  
